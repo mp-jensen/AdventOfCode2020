@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Day11_1 {
+public class Day11_2 {
     public static void main (String[] argv) {
         ArrayList<ArrayList<Character>> originalSeating = new ArrayList<>();
         ArrayList<ArrayList<Integer>> occupiedCount = new ArrayList<>();
@@ -39,38 +39,156 @@ public class Day11_1 {
 //                        System.out.print(occupiedCount.get(row).get(col));
                         if(originalSeating.get(row).get(col) != '.') {
                             int occupiedNeighbors = 0;
-                            if(row > 0 && row < rowCount - 1 && col > 0 && col < colCount - 1) {
-                                for(int i=row-1; i<=row+1; i++){
-                                    for(int j=col-1; j<=col+1; j += 1) {
-                                        if(!(j==col && i==row) && originalSeating.get(i).get(j) == '#') {
-                                            occupiedNeighbors++;
+                            if(row>0 && col>0) {
+                                if(originalSeating.get(row-1).get(col-1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row-1).get(col-1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row-offset >= 0 && col - offset >= 0) {
+                                        switch(originalSeating.get(row-offset).get(col-offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
                                         }
                                     }
                                 }
-                            } else {
-                                if(row > 0) {
-                                    occupiedNeighbors += originalSeating.get(row - 1).get(col) == '#' ? 1 : 0;
-                                    if (col > 0 && originalSeating.get(row - 1).get(col - 1) == '#') {
-                                        occupiedNeighbors++;
-                                    }
-                                    if (col < colCount - 1 && originalSeating.get(row - 1).get(col + 1) == '#') {
-                                        occupiedNeighbors++;
+                            }
+                            if(row>0) {
+                                if(originalSeating.get(row-1).get(col) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row-1).get(col) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row-offset >= 0) {
+                                        switch(originalSeating.get(row-offset).get(col)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
                                     }
                                 }
-                                if(row < rowCount - 1) {
-                                    occupiedNeighbors += originalSeating.get(row + 1).get(col) == '#' ? 1 : 0;
-                                    if (col > 0 && originalSeating.get(row + 1).get(col - 1) == '#') {
-                                        occupiedNeighbors++;
-                                    }
-                                    if (col < colCount - 1 && originalSeating.get(row + 1).get(col + 1) == '#') {
-                                        occupiedNeighbors++;
+                            }
+                            if(row>0 && col<colCount-1) {
+                                if(originalSeating.get(row-1).get(col+1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row-1).get(col+1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row-offset >= 0 && col+offset < colCount) {
+                                        switch(originalSeating.get(row-offset).get(col+offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
                                     }
                                 }
-                                if(col > 0) {
-                                    occupiedNeighbors += originalSeating.get(row).get(col-1) == '#' ? 1 : 0;
+                            }
+                            if(col > 0) {
+                                if(originalSeating.get(row).get(col-1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row).get(col-1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && col-offset >= 0) {
+                                        switch(originalSeating.get(row).get(col-offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
+                                    }
                                 }
-                                if(col < colCount - 1) {
-                                    occupiedNeighbors += originalSeating.get(row).get(col+1) == '#' ? 1 : 0;
+                            }
+                            if(col<colCount-1) {
+                                if(originalSeating.get(row).get(col+1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row).get(col+1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && col+offset < colCount) {
+                                        switch(originalSeating.get(row).get(col+offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
+                                    }
+                                }
+                            }
+                            if(row<rowCount-1 && col>0) {
+                                if(originalSeating.get(row+1).get(col-1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row+1).get(col-1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row+offset < rowCount && col-offset >= 0) {
+                                        switch(originalSeating.get(row+offset).get(col-offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
+                                    }
+                                }
+                            }
+                            if(row<rowCount-1) {
+                                if(originalSeating.get(row+1).get(col) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row+1).get(col) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row+offset < rowCount ) {
+                                        switch(originalSeating.get(row+offset).get(col)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
+                                    }
+                                }
+                            }
+                            if(row<rowCount-1 && col<colCount-1) {
+                                if(originalSeating.get(row+1).get(col+1) == '#') {
+                                    occupiedNeighbors++;
+                                } else if(originalSeating.get(row+1).get(col+1) == '.') {
+                                    int offset = 2;
+                                    boolean foundNeighbor = false;
+                                    while(!foundNeighbor && row+offset < rowCount && col+offset < colCount) {
+                                        switch(originalSeating.get(row+offset).get(col+offset)) {
+                                            case '#':
+                                                occupiedNeighbors++;
+                                            case 'L':
+                                                foundNeighbor = true;
+                                                break;
+                                            case '.':
+                                                offset++;
+                                        }
+                                    }
                                 }
                             }
                             occupiedCount.get(row).set(col, occupiedNeighbors);
@@ -83,7 +201,7 @@ public class Day11_1 {
                         if (originalSeating.get(row).get(col) == 'L' && occupiedCount.get(row).get(col) == 0) {
                             originalSeating.get(row).set(col, '#');
                             stateChanged = true;
-                        } else if (originalSeating.get(row).get(col) == '#' && occupiedCount.get(row).get(col) >= 4) {
+                        } else if (originalSeating.get(row).get(col) == '#' && occupiedCount.get(row).get(col) >= 5) {
                             originalSeating.get(row).set(col, 'L');
                             stateChanged = true;
                         }
